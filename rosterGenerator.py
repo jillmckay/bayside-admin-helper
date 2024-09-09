@@ -86,7 +86,7 @@ def at_a_glance(roster, leader_map, writer, num_chunks=4):
     pivot = []
     for gid, groster in sorted(roster.items()):
         all_groups.extend(groster)
-        group_name = gid.partition('-')[0].strip()
+        group_name = gid.partition('-')[0].strip() if '-' in gid else f"TABLE {gid.split('TABLE')[0].strip()}" if "TABLE" in gid else gid
         pivot.append({
             "Leader Name": f"{leader_map[gid][0]['First Name']} {leader_map[gid][0]['Last Name']}" if gid != "UNASSIGNED" else "",
             "Group": group_name,
@@ -258,7 +258,7 @@ def main():
     for group, groster in sorted(roster.items()):
         logger.info(f"Generating Roster for {group}")
         group_roster(group, groster, writer)
-    writer.save()
+    writer.book.save(output)
 
 
 if __name__ == '__main__':
